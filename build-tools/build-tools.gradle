@@ -1,0 +1,47 @@
+/*
+ * build-tools.gradle
+ *
+ * Build the tools on which the Jython Project depends at *build time*.
+ * This is structured as an independent build. It is included in the main
+ * Jython build through its settings file, and its products aa dependencies.
+ */
+
+plugins {
+    id 'java'
+    id 'antlr'
+    id 'java-gradle-plugin'
+}
+
+description = 'Tools for building Jython'
+group = 'org.python'
+version = '0.2.0-SNAPSHOT'
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    antlr "org.antlr:antlr4:4.7" // use ANTLR version 4
+    testCompile 'junit:junit:4.12'
+}
+
+
+generateGrammarSource {
+    arguments += ["-visitor"]
+}
+
+/* This needs re-homing to org.python.asdf.compiler (if we use it)
+
+gradlePlugin {
+    plugins {
+        asdlCompilerPlugin {
+            id = 'uk.co.farowl.asdl.compiler'
+            implementationClass = 'uk.co.farowl.asdl.gradle.ASDLPlugin'
+            displayName = 'ASDL Compiler Plugin'
+            description = 'Compile Abstract Syntax Description Language to Java'
+        }
+    }
+}
+*/
