@@ -182,8 +182,8 @@ dependencies {
     antlr 'org.antlr:antlr:3.5.3'
     implementation 'org.antlr:antlr-runtime:3.5.3'
 
-    implementation 'org.apache.commons:commons-compress:1.26.2'
-    implementation 'commons-io:commons-io:2.16.1'
+    implementation 'org.apache.commons:commons-compress:1.28.0'
+    implementation 'commons-io:commons-io:2.22.0'
 
     implementation 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
@@ -192,7 +192,7 @@ dependencies {
     implementation 'org.ow2.asm:asm-commons:9.10.1'
     implementation 'org.ow2.asm:asm-util:9.10.1'
 
-    implementation 'com.google.guava:guava:33.2.1-jre'
+    implementation 'com.google.guava:guava:33.6.0-jre'
  
     implementation 'com.ibm.icu:icu4j:75.1'
 
