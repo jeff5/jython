@@ -861,7 +861,7 @@ The text for an official release would continue like ...
             <rule pattern="org.apache.commons.compress.**" result="org.python.apache.commons.compress.@1"/>
             <zipfileset src="extlibs/commons-io-2.22.0.jar" excludes="META-INF/versions/9/module-info.class"/>
             <rule pattern="org.apache.commons.io.**" result="org.python.apache.commons.io.@1"/>
-            <zipfileset src="extlibs/failureaccess-1.0.3.jar"/>
+            <zipfileset src="extlibs/failureaccess-1.0.3.jar" excludes="META-INF/**"/>
             <zipfileset src="extlibs/guava-33.6.0-jre.jar" excludes="META-INF/**"/>
             <rule pattern="com.google.**" result="org.python.google.@1"/>
             <zipfileset src="extlibs/icu4j-77.1.jar"/>
