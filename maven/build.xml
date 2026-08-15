@@ -79,7 +79,7 @@
     </target>
 
     <target name="bundle-installer" depends="prepare">
-        <m2-bundle artifactId="jython-installer" version="${jython.version}" />
+        <m2-bundle-nosource artifactId="jython-installer" version="${jython.version}" />
     </target>
 
     <target name="bundle-slim" depends="prepare" if="gradle.published">
@@ -147,6 +147,45 @@
             <!-- The source and Javadoc are already prepared (but add the version to the name). -->
             <copy file="@{fromDir}/sources.jar" tofile="@{artifact}/@{basename}-sources.jar" />
             <copy file="@{fromDir}/javadoc.jar" tofile="@{artifact}/@{basename}-javadoc.jar" />
+
+            <!-- Create the POM from the given template with placeholders replaced. -->
+            <copy file="maven/pom-template.xml" tofile="@{artifact}/@{basename}.pom">
+                <filterset>
+                    <filter token="PROJECT-VERSION" value="@{version}" />
+                    <filter token="ARTIFACT-ID" value="@{artifactId}" />
+                </filterset>
+            </copy>
+
+            <!-- Sign everything. -->
+            <sign-all artifact="@{artifact}" artifactId="@{artifactId}" version="@{version}" />
+
+            <!-- Checksum JARs and POMs -->
+            <checksum-pom-jar artifact="@{artifact}" />
+
+            <!-- ZIP-up the entire contents of the staging directory. -->
+            <zip destfile="${pubs.dir}/@{basename}-bundle.zip">
+                <fileset dir="@{stageDir}" />
+            </zip>
+        </sequential>
+    </macrodef>
+
+    <!-- Stage (in @{stageDir}), creating a POM, and adding the version to names used,
+         but excluding source and Javadoc. (We use this for the installer.)
+         Then create a bundle in ${pubs.dir} for release. -->
+    <macrodef name="m2-bundle-nosource">
+        <attribute name="artifactId" />
+        <attribute name="version" />
+        <attribute name="fromDir" default="${dist.dir}" />
+        <attribute name="stageDir" default="${build.maven}" />
+        <attribute name="artifact" default="@{stageDir}/${m2.groupDir}/@{artifactId}/@{version}" />
+        <attribute name="basename" default="@{artifactId}-@{version}" />
+        <sequential>
+            <!-- Clean the staging directory. -->
+            <delete dir="@{stageDir}/${m2.groupDir}" />
+            <mkdir dir="@{artifact}" />
+
+            <!-- Copy over the primary artifact from @{fromDir} to the staging area. -->
+            <copy file="@{fromDir}/@{artifactId}.jar" tofile="@{artifact}/@{basename}.jar" />
 
             <!-- Create the POM from the given template with placeholders replaced. -->
             <copy file="maven/pom-template.xml" tofile="@{artifact}/@{basename}.pom">
